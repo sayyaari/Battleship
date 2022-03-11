@@ -50,6 +50,34 @@ namespace Battleship.Tests.Model
             cell.OccupiedBy.Should().Be(firstShip);
         }
 
+        [Fact]
+        public void Should_Attack_Cell_Return_Hit_When_Occupied()
+        {
+            Cell cell = new(CreatePosition());
+            Ship firstShip = new();
+            cell.TryOccupy(firstShip);
+            
+            
+            var result = cell.Attack();
+
+            result.Should().Be(AttackResult.Hit);
+
+        }
+
+        [Fact]
+        public void Should_Attack_Cell_Return_Hit_When_Not_Occupied()
+        {
+            Cell cell = new(CreatePosition());
+            Ship firstShip = new();
+
+
+            var result = cell.Attack();
+
+            result.Should().Be(AttackResult.Miss);
+
+        }
+
+
         private Position CreatePosition() => new(_fixture.Create<int>(), _fixture.Create<int>());
     }
 }

@@ -11,6 +11,8 @@
 
         public Ship? OccupiedBy { get; private set; }
 
+        public bool HasHit { get; private set; }
+
         public bool IsOccupied => OccupiedBy != null;
 
         public bool TryOccupy(Ship ship)
@@ -22,6 +24,17 @@
             }
 
             return false;
+        }
+
+        public AttackResult Attack()
+        {
+            if (IsOccupied)
+            {
+                HasHit = true;
+                return AttackResult.Hit;
+            }
+
+            return AttackResult.Miss;
         }
     }
 }
