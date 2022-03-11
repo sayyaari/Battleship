@@ -2,14 +2,14 @@
 using FluentAssertions;
 using Xunit;
 
-namespace Battleship.Tests
+namespace Battleship.Tests.Commands
 {
-    public class CommandResultTests
+    public class ResultTests
     {
         [Fact]
         public void Should_Error_Be_Null()
         {
-            CommandResult result = new CommandResult();
+            Result result = new Result();
 
             result.Error.Should().BeNull();
 
@@ -18,7 +18,7 @@ namespace Battleship.Tests
         [Fact]
         public void Should_Be_Success_When_Does_Not_Have_Any_Error()
         {
-            CommandResult result = new CommandResult();
+            Result result = new Result();
 
             result.IsFailure().Should().BeFalse(); 
         }

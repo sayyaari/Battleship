@@ -3,9 +3,9 @@ using MediatR;
 
 namespace Battleship.Commands
 {
-    public class CreateBoardCommand : IRequest<CommandResult<Board>>
+    public class CreateBoard : IRequest<Result<Board>>
     {
-        public CreateBoardCommand(int dimension)
+        public CreateBoard(int dimension)
         {
             Dimension = dimension;
         }
