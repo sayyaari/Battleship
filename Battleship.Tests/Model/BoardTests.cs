@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoMoq;
+using Battleship.Exceptions;
 using Battleship.Model;
 using Battleship.Validators;
 using FluentAssertions;
@@ -19,17 +20,10 @@ namespace Battleship.Tests.Model
         public BoardTests()
         {
             _fixture = new Fixture().Customize(new AutoMoqCustomization());
-        }
-
-
-        [Fact]
-        public void Should_Construction_Set_The_Grid()
-        {
-            _boardGrid = new Mock<IBoardGrid>();
-
+            _boardGrid = new Mock<IBoardGrid>(MockBehavior.Strict);
             _board = new Board(_boardGrid.Object);
+            _cellUnderAttack = new Mock<ICell>(MockBehavior.Strict);
 
-            _board.Grid.Should().Be(_boardGrid.Object);
         }
 
 
@@ -38,15 +32,10 @@ namespace Battleship.Tests.Model
         [InlineData(AttackResult.Hit)]
         public void Should_Attack_Return_ExpectedResult(AttackResult expectedAttackResult)
         {
-            Position attackPosition = _fixture.Create<Position>();
-
-            SetupBoardGridForAttack(expectedAttackResult, attackPosition);
-
-            _board = new Board(_boardGrid.Object);
+            var attackPosition = SetupBoardGridForAttack(expectedAttackResult);
 
 
             var attackResult = _board.TakeAttack(attackPosition.X, attackPosition.Y);
-
 
 
             attackResult.Should().Be(expectedAttackResult);
@@ -60,41 +49,53 @@ namespace Battleship.Tests.Model
         [Fact]
         public void Should_Attack_Throw_Exception_When_Attack_Position_Is_Invalid()
         {
-            ICell returnedCellObject = null;
-
-            _boardGrid = new Mock<IBoardGrid>(MockBehavior.Strict);
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-            _boardGrid.Setup(x => x.TryGet(It.IsAny<Position>(), out returnedCellObject))
-                .Returns(false);
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+            SetupBoardGridToReturnFalseWhenAccessingCell();
 
             Position attackPosition = _fixture.Create<Position>();
-
-            _board = new Board(_boardGrid.Object);
-
 
 
             Action act = () => _board.TakeAttack(attackPosition.X, attackPosition.Y);
 
 
+            act.Should().Throw<OutOfRangePosition>();
+            _boardGrid.VerifyAll();
+        }
 
-            act.Should().Throw<ArgumentOutOfRangeException>()
-                .WithMessage($"The provided position {attackPosition} is not in the board's boundary");
+        [Fact]
+        public void Should_AddShip_Throw_Exception_When_Position_Is_Invalid()
+        {
+            var startPosition = _fixture.Create<Position>();
+            _boardGrid.Setup(x => x.IsPositionInGrid(It.IsAny<Position>())).Returns(false)
+                .Callback<Position>(position => position.Should().Be(startPosition));
 
+
+            Action act = () => _board.AddShip(_fixture.Create<Ship>(), _fixture.Create<Direction>(), startPosition);
+
+
+            act.Should().Throw<OutOfRangePosition>();
             _boardGrid.VerifyAll();
         }
 
 
-        private void SetupBoardGridForAttack(AttackResult expectedAttackResult, Position attackPosition)
+        private void SetupBoardGridToReturnFalseWhenAccessingCell()
+        {
+            ICell returnedCellObject = null;
+
+            _boardGrid.Setup(x => x.TryGet(It.IsAny<Position>(), out returnedCellObject))
+                .Returns(false);
+        }
+
+        private Position SetupBoardGridForAttack(AttackResult expectedAttackResult)
         {
             // Set up the Cell taking attack
-            _cellUnderAttack = new Mock<ICell>(MockBehavior.Strict);
             _cellUnderAttack.Setup(x => x.Attack()).Returns(expectedAttackResult);
+
+
+            Position attackPosition = _fixture.Create<Position>();
 
 
             // Set up BoardGrid
             ICell returnedCellObject = null;
-            _boardGrid = new Mock<IBoardGrid>(MockBehavior.Strict);
             _boardGrid.Setup(x => x.TryGet(It.IsAny<Position>(), out returnedCellObject))
                 .Callback((Position p, out ICell cell) =>
                 {
@@ -102,8 +103,8 @@ namespace Battleship.Tests.Model
                     cell = this._cellUnderAttack.Object;
                 })
                 .Returns(true);
+
+            return attackPosition;
         }
-
-
     }
 }

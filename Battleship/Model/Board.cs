@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("Battleship.Tests")]
+﻿using Battleship.Exceptions;
 
 namespace Battleship.Model
 {
@@ -9,22 +7,31 @@ namespace Battleship.Model
         public Board(IBoardGrid boardGrid)
         {
             Grid = boardGrid; ;
+           
         }
 
         internal IBoardGrid Grid { get; init; }
 
+        public bool AddShip(Ship ship, Direction direction, Position startPosition)
+        {
+            if (!Grid.IsPositionInGrid(startPosition))
+                throw new OutOfRangePosition(startPosition);
+
+            throw new NotImplementedException();
+
+        }
+
         public AttackResult TakeAttack(int x, int y)
         {
             Position position = new(x, y);
+
 
             if (Grid.TryGet(position, out var cell))
             {
                 return cell.Attack();
             }
 
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-            throw new ArgumentOutOfRangeException($"The provided position {position} is not in the board's boundary",(Exception) null );
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+            throw new OutOfRangePosition(position);
         }
 
     }

@@ -14,7 +14,13 @@ namespace Battleship.Model
 
         public BoardDimension Dimension { get; init; }
 
-        internal ICell[,] Cells { get; init; }
+        public ICell[,] Cells { get; init; }
+
+                
+        public bool IsPositionInGrid(Position position)
+        {
+            return _positionValidator.IsValid(position, Dimension);
+        }
 
         public bool TryGet(Position position, out ICell? cell)
         {

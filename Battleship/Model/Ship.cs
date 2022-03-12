@@ -2,5 +2,6 @@
 {
     public class Ship
     {
+        public ShipSize Size { get; set; }
     }
 }

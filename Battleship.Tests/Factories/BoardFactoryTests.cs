@@ -21,9 +21,26 @@ namespace Battleship.Tests.Factories
         public void Should_Create_Cell()
         {
 
-            BoardDimension dimension = new(_fixture.Create<int>(), _fixture.Create<int>());
+            BoardDimension dimension = _fixture.Create<BoardDimension>();
+
             BoardGrid grid = _fixture.Create<BoardGrid>();
 
+            Mock<IBoardGridFactory> gridFactory = SetupGridFactoryMock(dimension, grid);
+
+            BoardFactory factory = new(gridFactory.Object);
+
+
+
+            var board = factory.Create(dimension);
+
+
+
+            board.Should().NotBeNull();
+
+        }
+
+        private static Mock<IBoardGridFactory> SetupGridFactoryMock(BoardDimension dimension, BoardGrid grid)
+        {
             var gridFactory = new Mock<IBoardGridFactory>(MockBehavior.Strict);
             gridFactory.Setup(x => x.Create(It.IsAny<BoardDimension>()))
                 .Returns(grid)
@@ -31,14 +48,7 @@ namespace Battleship.Tests.Factories
                 {
                     d.Should().Be(dimension);
                 });
-
-            BoardFactory factory = new(gridFactory.Object);
-
-            var board = factory.Create(dimension);
-
-            board.Should().NotBeNull();
-            board.Grid.Should().Be(grid);
-
+            return gridFactory;
         }
     }
 }
