@@ -6,26 +6,26 @@ namespace Battleship.Model
 {
     public class Board
     {
-        public Board(BoardGrid boardGrid)
+        public Board(IBoardGrid boardGrid)
         {
             Grid = boardGrid; ;
         }
 
-        internal BoardGrid Grid { get; init; }
+        internal IBoardGrid Grid { get; init; }
 
-        //public AttackResult Attack(int x, int y)
-        //{
-        //    Position position = new(x, y);
+        public AttackResult TakeAttack(int x, int y)
+        {
+            Position position = new(x, y);
 
-        //    var cell = GetCellAt(position);
+            if (Grid.TryGet(position, out var cell))
+            {
+                return cell.Attack();
+            }
 
-        //    if (cell == null)
-        //        throw new ArgumentOutOfRangeException($"The provided position {position} is not in the board's boundary");
-
-
-        //    return cell.Attack();
-
-        //}
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+            throw new ArgumentOutOfRangeException($"The provided position {position} is not in the board's boundary",(Exception) null );
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+        }
 
     }
 }

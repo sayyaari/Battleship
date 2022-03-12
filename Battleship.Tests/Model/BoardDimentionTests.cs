@@ -15,10 +15,10 @@ namespace Battleship.Tests.Model
             int width = _fixture.Create<int>();
             int height = _fixture.Create<int>();
 
-            BoardDimension position = new(width, height);
+            BoardDimension dimension = new(width, height);
 
-            position.Width.Should().Be(width);
-            position.Height.Should().Be(height);
+            dimension.Width.Should().Be(width);
+            dimension.Height.Should().Be(height);
 
         }
 
@@ -27,10 +27,10 @@ namespace Battleship.Tests.Model
         {
             int size = _fixture.Create<int>();
 
-            BoardDimension position = new(size);
+            BoardDimension dimension = new(size);
 
-            position.Width.Should().Be(size);
-            position.Height.Should().Be(size);
+            dimension.Width.Should().Be(size);
+            dimension.Height.Should().Be(size);
 
         }
     }

@@ -1,6 +1,7 @@
 ﻿using AutoFixture;
 using Battleship.Factories;
 using Battleship.Model;
+using Battleship.Validators;
 using FluentAssertions;
 using Moq;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Battleship.Tests.Factories
     {
         Fixture _fixture;
         private Mock<ICellFactory> _cellFactory;
+        private readonly Mock<IPositionValidator> _positionValidator;
         private readonly BoardDimension _dimension;
         private BoardGridFactory _factory;
 
@@ -22,9 +24,11 @@ namespace Battleship.Tests.Factories
 
             _cellFactory = new Mock<ICellFactory>();
 
+            _positionValidator = new Mock<IPositionValidator>();
+
             _dimension = new BoardDimension(_fixture.Create<int>(), _fixture.Create<int>());
 
-            _factory = new(_cellFactory.Object);
+            _factory = new(_cellFactory.Object,new Mock<IPositionValidator>().Object);
 
         }
 
@@ -56,7 +60,7 @@ namespace Battleship.Tests.Factories
                 return cell;
             });
 
-            _factory = new(_cellFactory.Object);
+            _factory = new(_cellFactory.Object, _positionValidator.Object);
 
 
             var grid = _factory.Create(_dimension);
