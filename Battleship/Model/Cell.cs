@@ -1,6 +1,6 @@
 ﻿namespace Battleship.Model
 {
-    public class Cell
+    public class Cell : ICell
     {
         public Cell(Position position)
         {

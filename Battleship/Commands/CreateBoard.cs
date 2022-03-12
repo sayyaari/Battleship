@@ -5,10 +5,12 @@ namespace Battleship.Commands
 {
     public class CreateBoard : IRequest<Result<Board>>
     {
-        public CreateBoard(int dimension)
+        public CreateBoard(int width, int height)
         {
-            Dimension = dimension;
+            Width = width;
+            Height = height;
         }
-        public int Dimension { get; }
+        public int Width { get; init; }
+        public int Height { get; init; }
     }
 }

@@ -10,15 +10,15 @@ namespace Battleship.Tests.Model
         private readonly Fixture _fixture = new Fixture();
 
         [Fact]
-        public void Should_Set_Row_And_Column()
+        public void Should_Set_X_And_Y()
         {
-            int row = _fixture.Create<int>();
-            int column = _fixture.Create<int>();
+            int x = _fixture.Create<int>();
+            int y = _fixture.Create<int>();
 
-            Position position = new(row, column);
+            Position position = new(x, y);
 
-            position.Row.Should().Be(row);
-            position.Column.Should().Be(column);
+            position.X.Should().Be(x);
+            position.Y.Should().Be(y);
 
         }
     }

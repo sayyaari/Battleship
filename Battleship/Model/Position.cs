@@ -2,17 +2,17 @@
 {
     public struct Position
     {
-        public Position(int row, int column)
+        public Position(int x, int y)
         {
-            Row = row;
-            Column = column;
+            X = x;
+            Y = y;
         }
-        public int Row { get; }
-        public int Column { get; }
+        public int X { get; }
+        public int Y { get; }
 
         public override string ToString()
         {
-            return $"row={Row} column={Column}";
+            return $"X={X} Y={Y}";
         }
     }
 }
