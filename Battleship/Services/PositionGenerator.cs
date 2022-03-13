@@ -2,7 +2,7 @@
 
 namespace Battleship.Services
 {
-    public class PositionGenerator : IPositionGenerator
+    internal class PositionGenerator : IPositionGenerator
     {
         public IEnumerable<Position> Generate(Position originPosition, Direction direction, ShipSize boundary)
         {
@@ -11,7 +11,7 @@ namespace Battleship.Services
 
             yield return originPosition;
 
-            IncrementSteps steps = new IncrementSteps(direction);
+            IncrementSteps steps = new(direction);
             var currentPosition = originPosition;
             for (int i = 1; i < boundary.Length; i++)
             {
@@ -27,5 +27,4 @@ namespace Battleship.Services
         }
 
     }
-
 }

@@ -2,7 +2,6 @@
 {
     public struct IncrementSteps
     {
-
         public IncrementSteps(Direction direction)
         {
             if (direction == Direction.Horizaontal)

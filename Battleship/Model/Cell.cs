@@ -2,7 +2,7 @@
 
 namespace Battleship.Model
 {
-    public class Cell : ICell
+    internal class Cell : ICell
     {
         public Cell(Position position)
         {

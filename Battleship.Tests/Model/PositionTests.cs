@@ -7,7 +7,7 @@ namespace Battleship.Tests.Model
 {
     public class PositionTests
     {
-        private readonly Fixture _fixture = new Fixture();
+        private readonly Fixture _fixture = new();
 
         [Fact]
         public void Should_Set_X_And_Y()

@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Battleship.Model
 {
-    public class BoardGrid : IBoardGrid
+    internal class BoardGrid : IBoardGrid
     {
         private readonly IPositionValidator _positionValidator;
         private readonly IPositionGenerator _positionGenerator;

@@ -2,7 +2,7 @@
 
 namespace Battleship.Validators
 {
-    public class PositionValidator : IPositionValidator
+    internal class PositionValidator : IPositionValidator
     {
         public bool IsValid(Position position, BoardDimension dimension)
         {

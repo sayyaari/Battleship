@@ -3,7 +3,7 @@ using Battleship.Model.Interfaces;
 
 namespace Battleship.Factories
 {
-    public class BoardFactory : IBoardFactory
+    internal class BoardFactory : IBoardFactory
     {
         private readonly IBoardGridFactory _gridFactory;
 

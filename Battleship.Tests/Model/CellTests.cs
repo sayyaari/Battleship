@@ -7,7 +7,7 @@ namespace Battleship.Tests.Model
 {
     public class CellTests
     {
-        private readonly Fixture _fixture = new Fixture();
+        private readonly Fixture _fixture = new();
 
 
         [Fact]
@@ -68,8 +68,6 @@ namespace Battleship.Tests.Model
         public void Should_Attack_Cell_Return_Hit_When_Not_Occupied()
         {
             Cell cell = new(CreatePosition());
-            Ship firstShip = new();
-
 
             var result = cell.Attack();
 

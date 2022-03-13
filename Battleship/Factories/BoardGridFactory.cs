@@ -5,7 +5,7 @@ using Battleship.Validators;
 
 namespace Battleship.Factories
 {
-    public class BoardGridFactory : IBoardGridFactory
+    internal class BoardGridFactory : IBoardGridFactory
     {
         private readonly ICellFactory _cellFactory;
         private readonly IPositionValidator _positionValidator;

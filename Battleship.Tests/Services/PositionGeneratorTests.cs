@@ -38,7 +38,7 @@ namespace Battleship.Tests.Services
         public void Should_Generate_Correct_Number_Of_Position(int numberOfPosition)
         {
             var currentPosition = _fixture.Create<Position>();
-            PositionGenerator positionGenerator = new PositionGenerator();
+            PositionGenerator positionGenerator = new();
 
 
             var positions = positionGenerator.Generate(currentPosition, _fixture.Create<Direction>(), new ShipSize(numberOfPosition)).ToList();
