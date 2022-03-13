@@ -12,20 +12,18 @@ namespace Battleship.Model
             _grid = boardGrid; ;
         }
 
-        public bool AddShip(AddShipCommand command)
+        public bool AddShip(Ship ship)
         {
-            var (ship, startPosition, direction) = command;
-
-            if (!_grid.IsPositionInGrid(startPosition))
-                throw new OutOfRangePosition(startPosition);
+            if (!_grid.IsPositionInGrid(ship.StartPosition))
+                throw new OutOfRangePosition(ship.StartPosition);
 
             try
             {
-                var cells = _grid.CalculateOccupyingCells(startPosition, direction, ship.Size).ToList();
+                var cells = _grid.CalculateOccupyingCells(ship.StartPosition, ship.Direction, ship.Size).ToList();
 
                 if (cells.Count > 0)
                 {
-                    OccupiedArea area = new OccupiedArea(ship, startPosition, direction, cells);
+                    OccupiedArea area = new (ship, cells);
 
                     occupiedAreas.Add(area);
                 }
@@ -52,6 +50,4 @@ namespace Battleship.Model
         }
 
     }
-
-    public record AddShipCommand(Ship Ship, Position StartPosition, Direction Direction);
 }

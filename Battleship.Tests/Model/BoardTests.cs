@@ -64,7 +64,7 @@ namespace Battleship.Tests.Model
         [Fact]
         public void Should_AddShip_Throw_Exception_When_Position_Is_Invalid()
         {
-            var ship = _fixture.Create<AddShipCommand>();
+            var ship = _fixture.Create<Ship>();
             var startPosition = ship.StartPosition;
 
             _boardGrid.Setup(x => x.IsPositionInGrid(It.IsAny<Position>())).Returns(false)
@@ -114,9 +114,9 @@ namespace Battleship.Tests.Model
         }
 
 
-        private AddShipCommand SetupBoardGridForCalculationOccupyingCells(int cellsNumber)
+        private Ship SetupBoardGridForCalculationOccupyingCells(int cellsNumber)
         {
-            var shipCommand = _fixture.Create<AddShipCommand>();
+            var ship = _fixture.Create<Ship>();
 
             _boardGrid.Setup(x => x.IsPositionInGrid(It.IsAny<Position>())).Returns(true);
 
@@ -124,19 +124,19 @@ namespace Battleship.Tests.Model
             _boardGrid.Setup(x => x.CalculateOccupyingCells(It.IsAny<Position>(), It.IsAny<Direction>(), It.IsAny<ShipSize>()))
                 .Callback<Position, Direction, ShipSize>((position, direction, size) =>
                 {
-                    position.Should().Be(shipCommand.StartPosition);
-                    direction.Should().Be(shipCommand.Direction);
-                    size.Should().Be(shipCommand.Ship.Size);
+                    position.Should().Be(ship.StartPosition);
+                    direction.Should().Be(ship.Direction);
+                    size.Should().Be(ship.Size);
                 })
                 .Returns(Enumerable.Range(0,cellsNumber).Select(i=>_fixture.Create<ICell>()));
 
 
-            return shipCommand;
+            return ship;
         }
 
-        private AddShipCommand SetupBoardGridForThrowingShipNotFittedInBoardException()
+        private Ship SetupBoardGridForThrowingShipNotFittedInBoardException()
         {
-            var shipCommand = _fixture.Create<AddShipCommand>();
+            var shipCommand = _fixture.Create<Ship>();
 
             _boardGrid.Setup(x => x.IsPositionInGrid(It.IsAny<Position>())).Returns(true);
 

@@ -26,15 +26,11 @@ namespace Battleship.Tests.Model
         public void Should_Set_Properties_When_Constructed()
         {
             Ship ship = _fixture.Create<Ship>();
-            Position startPosition = _fixture.Create<Position>();
-            Direction direction = _fixture.Create<Direction>();
             IEnumerable<ICell> cells = _fixture.CreateMany<ICell>(10);
 
-            OccupiedArea area = new(ship, startPosition, direction, cells);
+            OccupiedArea area = new(ship, cells);
 
             area.Ship.Should().Be(ship);
-            area.StartPosition.Should().Be(startPosition);
-            area.Direction.Should().Be(direction);
             area.Cells.Should().BeEquivalentTo(cells);
         }
 
@@ -42,8 +38,6 @@ namespace Battleship.Tests.Model
         public void Should_Occupy_Passed_Cells()
         {
             Ship ship = _fixture.Create<Ship>();
-            Position startPosition = _fixture.Create<Position>();
-            Direction direction = _fixture.Create<Direction>();
 
 
             var cells = Enumerable.Range(0, new Random().Next(5)).Select(i =>
@@ -54,7 +48,7 @@ namespace Battleship.Tests.Model
                 return cell;
             }).ToList();
 
-            OccupiedArea area = new(ship, startPosition, direction, cells.Select(cell=>cell.Object));
+            OccupiedArea area = new(ship, cells.Select(cell=>cell.Object));
             
             // No need to any further assertion. Because ICell mock was set up as strict, if the setup is not called the test failed. 
         }
