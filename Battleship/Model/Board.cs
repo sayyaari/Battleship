@@ -49,5 +49,8 @@ namespace Battleship.Model
             throw new OutOfRangePosition(position);
         }
 
+        public bool HasLost => occupiedAreas.All(area => area.HasSunkShip);
+
+
     }
 }

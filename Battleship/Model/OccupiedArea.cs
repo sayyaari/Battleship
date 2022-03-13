@@ -10,7 +10,7 @@
         }
 
         public Ship Ship { get; init; }
-
         public IEnumerable<ICell> Cells { get; init; }
+        public bool HasSunkShip => Cells.All(cell => cell.HasHit);
     }
 }
