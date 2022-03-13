@@ -1,6 +1,7 @@
 ﻿using Battleship.Exceptions;
 using Battleship.Services;
 using Battleship.Validators;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Battleship.Model
 {
@@ -26,7 +27,7 @@ namespace Battleship.Model
             return _positionValidator.IsValid(position, Dimension);
         }
 
-        public bool TryGet(Position position, out ICell? cell)
+        public bool TryGet(Position position,[NotNullWhen(true)] out ICell? cell)
         {
             cell = default;
 

@@ -151,9 +151,9 @@ namespace Battleship.Tests.Model
 
         private void SetupBoardGridToReturnFalseWhenAccessingCell()
         {
-            ICell returnedCellObject = null;
+            ICell returnedCellObject;
 
-            _boardGrid.Setup(x => x.TryGet(It.IsAny<Position>(), out returnedCellObject))
+            _boardGrid.Setup(x => x.TryGet(It.IsAny<Position>(), out returnedCellObject!))
                 .Returns(false);
         }
 
@@ -167,8 +167,8 @@ namespace Battleship.Tests.Model
 
 
             // Set up BoardGrid
-            ICell returnedCellObject = null;
-            _boardGrid.Setup(x => x.TryGet(It.IsAny<Position>(), out returnedCellObject))
+            ICell returnedCellObject;
+            _boardGrid.Setup(x => x.TryGet(It.IsAny<Position>(), out returnedCellObject!))
                 .Callback((Position p, out ICell cell) =>
                 {
                     p.Should().Be(attackPosition);

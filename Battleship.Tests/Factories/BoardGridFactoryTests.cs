@@ -16,7 +16,7 @@ namespace Battleship.Tests.Factories
         private Mock<ICellFactory> _cellFactory;
         private readonly Mock<IPositionValidator> _positionValidator;
         private readonly BoardDimension _dimension;
-        private readonly new Mock<IPositionGenerator> _positionGenerator;
+        private readonly Mock<IPositionGenerator> _positionGenerator;
         private BoardGridFactory _factory;
 
         public BoardGridFactoryTests()
@@ -31,6 +31,7 @@ namespace Battleship.Tests.Factories
             _dimension = new BoardDimension(_fixture.Create<int>(), _fixture.Create<int>());
 
             _positionGenerator = new Mock<IPositionGenerator>();
+            
             _factory = new(_cellFactory.Object,new Mock<IPositionValidator>().Object, _positionGenerator.Object);
 
         }
