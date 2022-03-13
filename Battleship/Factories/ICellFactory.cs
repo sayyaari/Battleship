@@ -1,4 +1,5 @@
 ﻿using Battleship.Model;
+using Battleship.Model.Interfaces;
 
 namespace Battleship.Factories
 {

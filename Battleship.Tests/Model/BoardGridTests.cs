@@ -2,6 +2,7 @@
 using AutoFixture.AutoMoq;
 using Battleship.Exceptions;
 using Battleship.Model;
+using Battleship.Model.Interfaces;
 using Battleship.Services;
 using Battleship.Tests.Utils;
 using Battleship.Validators;

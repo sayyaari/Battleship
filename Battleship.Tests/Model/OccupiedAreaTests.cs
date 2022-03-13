@@ -1,6 +1,7 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoMoq;
 using Battleship.Model;
+using Battleship.Model.Interfaces;
 using FluentAssertions;
 using Moq;
 using System;

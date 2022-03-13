@@ -1,5 +1,6 @@
 ﻿using Battleship.Exceptions;
 using Battleship.Helpers;
+using Battleship.Model.Interfaces;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Battleship.Model

@@ -1,4 +1,5 @@
 ﻿using Battleship.Model;
+using Battleship.Model.Interfaces;
 using Battleship.Services;
 using Battleship.Validators;
 

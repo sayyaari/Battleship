@@ -1,4 +1,4 @@
-﻿namespace Battleship.Model
+﻿namespace Battleship.Model.Interfaces
 {
     public interface IOccupiedArea
     {

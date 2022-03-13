@@ -1,7 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using Battleship.Helpers;
+using Battleship.Model.Interfaces;
 
-[assembly:InternalsVisibleTo("Battleship.Tests")]
+[assembly: InternalsVisibleTo("Battleship.Tests")]
 namespace Battleship.Model
 {
     public class OccupiedArea : IOccupiedArea

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Battleship.Model
+namespace Battleship.Model.Interfaces
 {
     public interface IBoardGrid
     {
