@@ -1,4 +1,5 @@
 ﻿using Battleship.Model;
+using Battleship.Services;
 using Battleship.Validators;
 
 namespace Battleship.Factories
@@ -7,11 +8,13 @@ namespace Battleship.Factories
     {
         private readonly ICellFactory _cellFactory;
         private readonly IPositionValidator _positionValidator;
+        private readonly IPositionGenerator _positionGenerator;
 
-        public BoardGridFactory(ICellFactory cellFactory, IPositionValidator positionValidator)
+        public BoardGridFactory(ICellFactory cellFactory, IPositionValidator positionValidator, IPositionGenerator positionGenerator)
         {
             _cellFactory = cellFactory;
             _positionValidator = positionValidator;
+            _positionGenerator = positionGenerator;
         }
         public BoardGrid Create(BoardDimension dimension)
         {
@@ -24,7 +27,7 @@ namespace Battleship.Factories
                 }
             }
 
-            return new BoardGrid(cells, _positionValidator);
+            return new BoardGrid(cells, _positionValidator, _positionGenerator);
         }
     }
 }

@@ -71,7 +71,7 @@ namespace Battleship.Tests.Model
                 .Callback<Position>(position => position.Should().Be(startPosition));
 
 
-            Action act = () => _board.AddShip(_fixture.Create<AddShipCommand>());
+            Action act = () => _board.AddShip(ship);
 
 
             act.Should().Throw<OutOfRangePosition>();
@@ -103,7 +103,7 @@ namespace Battleship.Tests.Model
         [Theory]
         [InlineData(1)]
         [InlineData(12)]
-        public void Should_AddShip_Should_Return_False_When_Occupying_Cells_Have_Any_Value(int cellsNumber)
+        public void Should_AddShip_Should_Return_False_When_Occupying_Cells_Have_Zero_Item(int cellsNumber)
         {
             var shipCommand = SetupBoardGridForCalculationOccupyingCells(cellsNumber);
 
