@@ -1,8 +1,11 @@
-﻿namespace Battleship.Model
+﻿using Battleship.Helpers;
+
+namespace Battleship.Model
 {
     public struct BoardDimension
     {
-        public BoardDimension(int size):this(size, size)
+
+        public BoardDimension(int size) : this(size, size)
         {
         }
 
@@ -22,5 +25,12 @@
         {
             return $"width={Width} height={Height}";
         }
+
+        public static BoardDimension CreateFrom<T>(T[,] array)
+        {
+            array.ThrowIfNull();
+            return new BoardDimension(array.GetLength(0), array.GetLength(1));
+        }
+
     }
 }

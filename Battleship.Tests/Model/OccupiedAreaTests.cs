@@ -3,6 +3,7 @@ using AutoFixture.AutoMoq;
 using Battleship.Model;
 using FluentAssertions;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -18,6 +19,29 @@ namespace Battleship.Tests.Model
         {
             _fixture = new Fixture().Customize(new AutoMoqCustomization());
         }
+
+        [Fact]
+        public void Should_Throw_ArgumentNullException_When_Passed_Ship_IsNull()
+        {
+            Action act = () =>
+            {
+                OccupiedArea area = new(null!, _fixture.CreateMany<ICell>(10));
+            };
+
+            act.Should().Throw<ArgumentNullException>();
+        }
+        
+        [Fact]
+        public void Should_Throw_ArgumentNullException_When_Passed_Cells_IsNull()
+        {
+            Action act = () =>
+            {
+                OccupiedArea area = new(_fixture.Create<Ship>(), null!);
+            };
+
+            act.Should().Throw<ArgumentNullException>();
+        }
+
 
         [Fact]
         public void Should_Set_Properties_When_Constructed()

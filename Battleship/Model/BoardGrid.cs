@@ -1,4 +1,5 @@
 ﻿using Battleship.Exceptions;
+using Battleship.Helpers;
 using Battleship.Services;
 using Battleship.Validators;
 using System.Diagnostics.CodeAnalysis;
@@ -11,10 +12,10 @@ namespace Battleship.Model
         private readonly IPositionGenerator _positionGenerator;
         public BoardGrid(ICell[,] cells, IPositionValidator positionValidator, IPositionGenerator positionGenerator)
         {
-            Cells = cells;
-            Dimension = new(cells.GetLength(0), cells.GetLength(1));
-            _positionValidator = positionValidator;
-            _positionGenerator = positionGenerator;
+            Cells = cells.ThrowIfNull();
+            Dimension = BoardDimension.CreateFrom(Cells);
+            _positionValidator = positionValidator.ThrowIfNull();
+            _positionGenerator = positionGenerator.ThrowIfNull();
         }
 
         public BoardDimension Dimension { get; init; }

@@ -32,6 +32,39 @@ namespace Battleship.Tests.Model
             _grid = new BoardGrid(_cells, _positionValidator.Object, _positionGenerator.Object);
         }
 
+        [Fact]
+        public void Should_Throw_When_Passed_Cells_IsNull()
+        {
+            Action act = () =>
+            {
+                _grid = new BoardGrid(null!, _positionValidator.Object, _positionGenerator.Object);
+            };
+
+            act.Should().Throw<ArgumentNullException>();
+        }
+        
+        [Fact]
+        public void Should_Throw_When_Passed_PositionValidator_IsNull()
+        {
+            Action act = () =>
+            {
+                _grid = new BoardGrid(_cells, null!, _positionGenerator.Object);
+            };
+
+            act.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void Should_Throw_When_Passed_PositionGenerator_IsNull()
+        {
+            Action act = () =>
+            {
+                _grid = new BoardGrid(_cells, _positionValidator.Object, null!);
+            };
+
+            act.Should().Throw<ArgumentNullException>();
+        }
+
 
         [Fact]
         public void Should_Calculate_Correct_Dimension()

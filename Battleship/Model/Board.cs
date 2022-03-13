@@ -1,4 +1,6 @@
 ﻿using Battleship.Exceptions;
+using Battleship.Helpers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Battleship.Model
 {
@@ -6,10 +8,11 @@ namespace Battleship.Model
     {
         private readonly IBoardGrid _grid;
 
-        public Board(IBoardGrid boardGrid)
+        public Board([NotNull] IBoardGrid boardGrid)
         {
-            _grid = boardGrid; ;
+            _grid = boardGrid.ThrowIfNull();
         }
+
         internal List<IOccupiedArea> OccupiedAreas { get; init; } = new List<IOccupiedArea>();
 
         public bool AddShip(Ship ship)

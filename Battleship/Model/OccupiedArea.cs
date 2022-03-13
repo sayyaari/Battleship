@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Battleship.Helpers;
 
 [assembly:InternalsVisibleTo("Battleship.Tests")]
 namespace Battleship.Model
@@ -7,8 +8,8 @@ namespace Battleship.Model
     {
         public OccupiedArea(Ship ship, IEnumerable<ICell> cells)
         {
-            Ship = ship;
-            Cells = cells;
+            Ship = ship.ThrowIfNull();
+            Cells = cells.ThrowIfNull();
             Cells.ToList().ForEach(cell => cell.TryOccupy(ship));
         }
 

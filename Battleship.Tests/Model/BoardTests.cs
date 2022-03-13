@@ -27,6 +27,17 @@ namespace Battleship.Tests.Model
 
         }
 
+        [Fact]
+        public void Should_Throw_When_Passed_BoardGrid_IsNull()
+        {
+            Action act = () =>
+            {
+                Board board = new (null!);
+            };
+
+            act.Should().Throw<ArgumentNullException>();
+        }
+
 
         [Theory]
         [InlineData(AttackResult.Miss)]

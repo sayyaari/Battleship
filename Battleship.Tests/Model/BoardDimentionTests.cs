@@ -7,7 +7,7 @@ namespace Battleship.Tests.Model
 {
     public class BoardDimentionTests
     {
-        private readonly Fixture _fixture = new Fixture();
+        private readonly Fixture _fixture = new();
 
         [Fact]
         public void Should_Set_Width_And_Height()
@@ -33,5 +33,23 @@ namespace Battleship.Tests.Model
             dimension.Height.Should().Be(size);
 
         }
+
+
+        [Theory]
+        [InlineData(1, 5)]
+        [InlineData(3, 1)]
+        [InlineData(4, 7)]
+
+        public void Should_Create_Correct_Dimension_From_Two_Dimensional_Array(int x, int y)
+        {
+            object[,] array = new object[x, y] ;
+
+            var dimension = BoardDimension.CreateFrom(array);
+
+            dimension.Width.Should().Be(x);
+            dimension.Height.Should().Be(y);
+
+        }
+
     }
 }
