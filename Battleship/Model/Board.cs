@@ -5,12 +5,12 @@ namespace Battleship.Model
     public class Board
     {
         private readonly IBoardGrid _grid;
-        private readonly List<OccupiedArea> occupiedAreas = new();
 
         public Board(IBoardGrid boardGrid)
         {
             _grid = boardGrid; ;
         }
+        internal List<IOccupiedArea> OccupiedAreas { get; init; } = new List<IOccupiedArea>();
 
         public bool AddShip(Ship ship)
         {
@@ -25,7 +25,7 @@ namespace Battleship.Model
                 {
                     OccupiedArea area = new (ship, cells);
 
-                    occupiedAreas.Add(area);
+                    OccupiedAreas.Add(area);
                 }
 
                 return cells.Any();
@@ -49,7 +49,7 @@ namespace Battleship.Model
             throw new OutOfRangePosition(position);
         }
 
-        public bool HasLost => occupiedAreas.All(area => area.HasSunkShip);
+        public bool HasLost => OccupiedAreas.All(area => area.HasSunkShip);
 
 
     }

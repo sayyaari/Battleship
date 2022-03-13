@@ -1,6 +1,9 @@
-﻿namespace Battleship.Model
+﻿using System.Runtime.CompilerServices;
+
+[assembly:InternalsVisibleTo("Battleship.Tests")]
+namespace Battleship.Model
 {
-    public class OccupiedArea
+    public class OccupiedArea : IOccupiedArea
     {
         public OccupiedArea(Ship ship, IEnumerable<ICell> cells)
         {

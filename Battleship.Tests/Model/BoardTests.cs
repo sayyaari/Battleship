@@ -113,6 +113,41 @@ namespace Battleship.Tests.Model
             _boardGrid.VerifyAll();
         }
 
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(5)]
+        public void Should_HasLost_Return_True_When_All_Ships_In_Occupied_Aread_Have_Sunk(int occupiedAreaNumber)
+        {
+            var generatedOccupiedArea = Enumerable.Range(1, occupiedAreaNumber).Select(i =>
+            {
+                var occupiedArea = new Mock<IOccupiedArea>(MockBehavior.Strict);
+                occupiedArea.Setup(a => a.HasSunkShip).Returns(true);
+                return occupiedArea.Object;
+            }).ToList();
+
+            _board.OccupiedAreas.AddRange(generatedOccupiedArea);
+
+
+            _board.HasLost.Should().BeTrue();
+        }
+
+        
+        [Fact]
+        public void Should_HasLost_Return_False_When_At_Leas_One_Aread_ُShip_Has_Not_Sunk()
+        {
+            var generatedOccupiedArea = Enumerable.Range(1, 5).Select(i =>
+            {
+                var occupiedArea = new Mock<IOccupiedArea>(MockBehavior.Strict);
+                occupiedArea.Setup(a => a.HasSunkShip).Returns(() => i != 3);
+                return occupiedArea.Object;
+            }).ToList();
+
+            _board.OccupiedAreas.AddRange(generatedOccupiedArea);
+
+
+            _board.HasLost.Should().BeFalse();
+        }
 
         private Ship SetupBoardGridForCalculationOccupyingCells(int cellsNumber)
         {
@@ -128,7 +163,7 @@ namespace Battleship.Tests.Model
                     direction.Should().Be(ship.Direction);
                     size.Should().Be(ship.Size);
                 })
-                .Returns(Enumerable.Range(0,cellsNumber).Select(i=>_fixture.Create<ICell>()));
+                .Returns(Enumerable.Range(0, cellsNumber).Select(i => _fixture.Create<ICell>()));
 
 
             return ship;
