@@ -17,7 +17,7 @@ namespace Battleship.Model
 
         public ICell[,] Cells { get; init; }
 
-                
+
         public bool IsPositionInGrid(Position position)
         {
             return _positionValidator.IsValid(position, Dimension);
@@ -26,7 +26,7 @@ namespace Battleship.Model
         public bool TryGet(Position position, out ICell? cell)
         {
             cell = default;
-           
+
             if (_positionValidator.IsValid(position, Dimension))
             {
                 cell = Cells[position.X, position.Y];
