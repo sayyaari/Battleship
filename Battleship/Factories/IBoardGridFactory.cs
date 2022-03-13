@@ -1,9 +1,10 @@
 ﻿using Battleship.Model;
+using Battleship.Model.Interfaces;
 
 namespace Battleship.Factories
 {
     public interface IBoardGridFactory
     {
-        BoardGrid Create(BoardDimension dimension);
+        IBoardGrid Create(BoardDimension dimension);
     }
 }

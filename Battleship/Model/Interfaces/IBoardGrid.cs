@@ -5,6 +5,7 @@ namespace Battleship.Model.Interfaces
     public interface IBoardGrid
     {
         BoardDimension Dimension { get; init; }
+        ICell[,] Cells { get; init; }
 
         bool TryGet(Position position, [NotNullWhen(true)] out ICell? cell);
 

@@ -5,11 +5,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Battleship.Model
 {
-    public class Board
+    public class Board : IBoard
     {
         private readonly IBoardGrid _grid;
 
-        public Board([NotNull] IBoardGrid boardGrid)
+        internal Board([NotNull] IBoardGrid boardGrid)
         {
             _grid = boardGrid.ThrowIfNull();
         }
@@ -27,7 +27,7 @@ namespace Battleship.Model
 
                 if (cells.Count > 0)
                 {
-                    OccupiedArea area = new (ship, cells);
+                    OccupiedArea area = new(ship, cells);
 
                     OccupiedAreas.Add(area);
                 }

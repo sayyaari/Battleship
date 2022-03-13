@@ -1,14 +1,10 @@
 ﻿using Battleship.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Battleship.Model.Interfaces;
 
 namespace Battleship.Factories
 {
     public interface IBoardFactory
     {
-        Board Create(BoardDimension dimension);
+        IBoard Create(BoardDimension dimension);
     }
 }

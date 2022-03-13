@@ -17,7 +17,7 @@ namespace Battleship.Factories
             _positionValidator = positionValidator;
             _positionGenerator = positionGenerator;
         }
-        public BoardGrid Create(BoardDimension dimension)
+        public IBoardGrid Create(BoardDimension dimension)
         {
             ICell[,] cells = new Cell[dimension.Width, dimension.Height];
             for (int i = 0; i < dimension.Width; i++)

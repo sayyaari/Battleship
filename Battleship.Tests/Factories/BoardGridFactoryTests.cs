@@ -79,7 +79,7 @@ namespace Battleship.Tests.Factories
 
         }
 
-        private void VerifyGeneratedCellsPosition(Dictionary<(int, int), ICell> generatedCells, BoardGrid grid)
+        private void VerifyGeneratedCellsPosition(Dictionary<(int, int), ICell> generatedCells, IBoardGrid grid)
         {
             for (int i = 0; i < _dimension.Width; i++)
             {
