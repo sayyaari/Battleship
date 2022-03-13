@@ -5,6 +5,7 @@ using Battleship.Model;
 using FluentAssertions;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -13,9 +14,9 @@ namespace Battleship.Tests.Model
     public class BoardTests
     {
         private readonly IFixture _fixture;
-        private Board _board;
-        private Mock<IBoardGrid> _boardGrid;
-        private Mock<ICell> _cellUnderAttack;
+        private readonly Board _board;
+        private readonly Mock<IBoardGrid> _boardGrid;
+        private readonly Mock<ICell> _cellUnderAttack;
 
         public BoardTests()
         {
@@ -78,38 +79,54 @@ namespace Battleship.Tests.Model
             _boardGrid.VerifyAll();
         }
 
-        [Fact]
-        public void Should_AddShip_Should_Return_False_When_No_Occupying_Cells_Returned()
-        {
-            var shipCommand = SetupBoardGridForCalculationOccupyingCells(0);
-
-            var shipAdded = _board.AddShip(shipCommand);
-
-            shipAdded.Should().BeFalse();
-            _boardGrid.VerifyAll();
-        }
 
         [Fact]
         public void Should_AddShip_Should_Return_False_When_ShipNotFittedInBoard_Exception_Caught()
         {
-            var shipCommand = SetupBoardGridForThrowingShipNotFittedInBoardException();
+            var ship = SetupBoardGridForThrowingShipNotFittedInBoardException();
 
-            var shipAdded = _board.AddShip(shipCommand);
+            var shipAdded = _board.AddShip(ship);
 
             shipAdded.Should().BeFalse();
             _boardGrid.VerifyAll();
         }
 
+        [Fact]
+        public void Should_AddShip_Should_Return_False_When_No_Occupying_Cells_Returned()
+        {
+            var (ship, occupiedCells) = SetupBoardGridForCalculationOccupyingCells(0);
+            occupiedCells.Should().BeEmpty();
+
+            var shipAdded = _board.AddShip(ship);
+
+            shipAdded.Should().BeFalse();
+            _boardGrid.VerifyAll();
+
+        }
+
+
         [Theory]
         [InlineData(1)]
         [InlineData(12)]
-        public void Should_AddShip_Should_Return_False_When_Occupying_Cells_Have_Zero_Item(int cellsNumber)
+        public void Should_AddShip_Should_Return_True_When_Occupying_Cells_Have_Some_Items(int cellsNumber)
         {
-            var shipCommand = SetupBoardGridForCalculationOccupyingCells(cellsNumber);
+            var (ship, occupiedCells) = SetupBoardGridForCalculationOccupyingCells(cellsNumber);
+            occupiedCells.Should().NotBeEmpty();
 
-            var shipAdded = _board.AddShip(shipCommand);
+
+
+            var shipAdded = _board.AddShip(ship);
+
 
             shipAdded.Should().BeTrue();
+
+            _board.OccupiedAreas.Should().HaveCount(1);
+
+            var occupiedArea = _board.OccupiedAreas.First();
+            occupiedArea.Cells.Should().BeEquivalentTo(occupiedCells);
+            occupiedArea.Ship.Should().Be(ship);
+            occupiedArea.HasSunkShip.Should().BeFalse();
+
             _boardGrid.VerifyAll();
         }
 
@@ -132,29 +149,31 @@ namespace Battleship.Tests.Model
             _board.HasLost.Should().BeTrue();
         }
 
-        
+
         [Fact]
         public void Should_HasLost_Return_False_When_At_Leas_One_Aread_ُShip_Has_Not_Sunk()
         {
-            var generatedOccupiedArea = Enumerable.Range(1, 5).Select(i =>
+            var generatedOccupiedAreas = Enumerable.Range(1, 5).Select(i =>
             {
                 var occupiedArea = new Mock<IOccupiedArea>(MockBehavior.Strict);
                 occupiedArea.Setup(a => a.HasSunkShip).Returns(() => i != 3);
                 return occupiedArea.Object;
             }).ToList();
 
-            _board.OccupiedAreas.AddRange(generatedOccupiedArea);
+            _board.OccupiedAreas.AddRange(generatedOccupiedAreas);
 
 
             _board.HasLost.Should().BeFalse();
         }
 
-        private Ship SetupBoardGridForCalculationOccupyingCells(int cellsNumber)
+        private (Ship, IEnumerable<ICell>) SetupBoardGridForCalculationOccupyingCells(int cellsNumber)
         {
             var ship = _fixture.Create<Ship>();
 
             _boardGrid.Setup(x => x.IsPositionInGrid(It.IsAny<Position>())).Returns(true);
 
+
+            IEnumerable<ICell> occupiedCells = Enumerable.Range(0, cellsNumber).Select(i => _fixture.Create<ICell>()).ToList();
 
             _boardGrid.Setup(x => x.CalculateOccupyingCells(It.IsAny<Position>(), It.IsAny<Direction>(), It.IsAny<ShipSize>()))
                 .Callback<Position, Direction, ShipSize>((position, direction, size) =>
@@ -163,10 +182,10 @@ namespace Battleship.Tests.Model
                     direction.Should().Be(ship.Direction);
                     size.Should().Be(ship.Size);
                 })
-                .Returns(Enumerable.Range(0, cellsNumber).Select(i => _fixture.Create<ICell>()));
+                .Returns(occupiedCells);
 
 
-            return ship;
+            return (ship, occupiedCells);
         }
 
         private Ship SetupBoardGridForThrowingShipNotFittedInBoardException()

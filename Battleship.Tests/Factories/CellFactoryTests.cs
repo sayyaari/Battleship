@@ -8,7 +8,7 @@ namespace Battleship.Tests.Factories
 {
     public class CellFactoryTests
     {
-        Fixture _fixture = new Fixture();
+        private readonly Fixture _fixture = new ();
 
         [Fact]
         public void Should_Create_Cell()

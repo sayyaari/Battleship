@@ -12,7 +12,7 @@ namespace Battleship.Tests.Factories
 {
     public class BoardGridFactoryTests
     {
-        Fixture _fixture;
+        private readonly Fixture _fixture;
         private Mock<ICellFactory> _cellFactory;
         private readonly Mock<IPositionValidator> _positionValidator;
         private readonly BoardDimension _dimension;
