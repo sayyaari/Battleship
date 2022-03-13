@@ -2,10 +2,10 @@
 using AutoFixture.AutoMoq;
 using Battleship.Exceptions;
 using Battleship.Model;
-using Battleship.Validators;
 using FluentAssertions;
 using Moq;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace Battleship.Tests.Model
@@ -64,16 +64,88 @@ namespace Battleship.Tests.Model
         [Fact]
         public void Should_AddShip_Throw_Exception_When_Position_Is_Invalid()
         {
-            var startPosition = _fixture.Create<Position>();
+            var ship = _fixture.Create<AddShipCommand>();
+            var startPosition = ship.StartPosition;
+
             _boardGrid.Setup(x => x.IsPositionInGrid(It.IsAny<Position>())).Returns(false)
                 .Callback<Position>(position => position.Should().Be(startPosition));
 
 
-            Action act = () => _board.AddShip(_fixture.Create<Ship>(), _fixture.Create<Direction>(), startPosition);
+            Action act = () => _board.AddShip(_fixture.Create<AddShipCommand>());
 
 
             act.Should().Throw<OutOfRangePosition>();
             _boardGrid.VerifyAll();
+        }
+
+        [Fact]
+        public void Should_AddShip_Should_Return_False_When_No_Occupying_Cells_Returned()
+        {
+            var shipCommand = SetupBoardGridForCalculationOccupyingCells(0);
+
+            var shipAdded = _board.AddShip(shipCommand);
+
+            shipAdded.Should().BeFalse();
+            _boardGrid.VerifyAll();
+        }
+
+        [Fact]
+        public void Should_AddShip_Should_Return_False_When_ShipNotFittedInBoard_Exception_Caught()
+        {
+            var shipCommand = SetupBoardGridForThrowingShipNotFittedInBoardException();
+
+            var shipAdded = _board.AddShip(shipCommand);
+
+            shipAdded.Should().BeFalse();
+            _boardGrid.VerifyAll();
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(12)]
+        public void Should_AddShip_Should_Return_False_When_Occupying_Cells_Have_Any_Value(int cellsNumber)
+        {
+            var shipCommand = SetupBoardGridForCalculationOccupyingCells(cellsNumber);
+
+            var shipAdded = _board.AddShip(shipCommand);
+
+            shipAdded.Should().BeTrue();
+            _boardGrid.VerifyAll();
+        }
+
+
+        private AddShipCommand SetupBoardGridForCalculationOccupyingCells(int cellsNumber)
+        {
+            var shipCommand = _fixture.Create<AddShipCommand>();
+
+            _boardGrid.Setup(x => x.IsPositionInGrid(It.IsAny<Position>())).Returns(true);
+
+
+            _boardGrid.Setup(x => x.CalculateOccupyingCells(It.IsAny<Position>(), It.IsAny<Direction>(), It.IsAny<ShipSize>()))
+                .Callback<Position, Direction, ShipSize>((position, direction, size) =>
+                {
+                    position.Should().Be(shipCommand.StartPosition);
+                    direction.Should().Be(shipCommand.Direction);
+                    size.Should().Be(shipCommand.Ship.Size);
+                })
+                .Returns(Enumerable.Range(0,cellsNumber).Select(i=>_fixture.Create<ICell>()));
+
+
+            return shipCommand;
+        }
+
+        private AddShipCommand SetupBoardGridForThrowingShipNotFittedInBoardException()
+        {
+            var shipCommand = _fixture.Create<AddShipCommand>();
+
+            _boardGrid.Setup(x => x.IsPositionInGrid(It.IsAny<Position>())).Returns(true);
+
+
+            _boardGrid.Setup(x => x.CalculateOccupyingCells(It.IsAny<Position>(), It.IsAny<Direction>(), It.IsAny<ShipSize>()))
+                .Throws<ShipeNotFittedInBoard>();
+
+
+            return shipCommand;
         }
 
 

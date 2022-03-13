@@ -7,5 +7,6 @@
         bool TryGet(Position position, out ICell? cell);
 
         bool IsPositionInGrid(Position position);
+        IEnumerable<ICell> CalculateOccupyingCells(Position startPosition, Direction direction, ShipSize size);
     }
 }
