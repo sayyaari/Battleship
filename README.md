@@ -106,21 +106,20 @@ To create a board
 To create and initialize the BoardGrid
 
 ##### ICellFactory, CellFactory
-To create and initialize the cell of the grid
+To create and initialize a cells of the board grid
 
 ### Exceptions
 ##### OutOfRangePosition
-Represents that a Position is not inside the board grid
+Represents a Position is not inside the board grid
 
 ##### ShipeNotFittedInBoard
-To be thrown when to show that a Ship cannot be added to the board
-
+To be thrown when to inform that a Ship cannot be added to the board
 
 ### Validators
 ##### IPositionValidator, PositionValidator
-To validate that a specific position is in range of the board grid
+To validate whether a specific position is inside a board or not
 
 ### Services
 ##### IPositionGenerator, PositionGenerator
-Generate set of positions related to an area of the grid which a ship is supposed to sit there
+Generates set of positions of an area in the board grid which a ship is supposed to sit there
 
