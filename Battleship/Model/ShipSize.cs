@@ -8,9 +8,15 @@
         }
         public int Length { get; init; }
 
+        
+        public static implicit operator ShipSize(int length)
+        {
+            return new ShipSize(length);
+        }
+
         public override string ToString()
         {
-            return $"Ship Length={Length}";
+            return $"Length={Length}";
         }
     }
 }

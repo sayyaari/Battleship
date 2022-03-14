@@ -9,7 +9,6 @@ namespace Battleship.Tests.Model
     {
         private readonly Fixture _fixture = new();
 
-
         [Fact]
         public void Should_Initialize_Correctly()
         {
@@ -25,7 +24,8 @@ namespace Battleship.Tests.Model
             Cell cell = new(CreatePosition());
             cell.IsOccupied.Should().BeFalse();
 
-            var ship = new Ship();
+
+            var ship = _fixture.Create<Ship>();
             var didOccupy = cell.TryOccupy(ship);
 
 
@@ -40,10 +40,10 @@ namespace Battleship.Tests.Model
         {
             Cell cell = new(CreatePosition());
 
-            Ship firstShip = new();
+            Ship firstShip = _fixture.Create<Ship>();
             cell.TryOccupy(firstShip);
 
-            var didOccupyByNewShip = cell.TryOccupy(new Ship());
+            var didOccupyByNewShip = cell.TryOccupy(_fixture.Create<Ship>());
 
 
             didOccupyByNewShip.Should().BeFalse();
@@ -54,7 +54,7 @@ namespace Battleship.Tests.Model
         public void Should_Attack_Cell_Return_Hit_When_Occupied()
         {
             Cell cell = new(CreatePosition());
-            Ship firstShip = new();
+            Ship firstShip = _fixture.Create<Ship>();
             cell.TryOccupy(firstShip);
             
             

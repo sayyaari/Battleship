@@ -56,7 +56,7 @@ namespace Battleship.Tests.Validators
         [Fact]
         public void Should_Not_Include_Negative_Y()
         {
-            Position position = new(_random.Next(_width), -_random.Next(_height));
+            Position position = new(_random.Next(_width), -_random.Next(1, _height));
 
             var result = _positionValidator.IsValid(position, _dimension);
 
