@@ -71,55 +71,55 @@ Some basic principles which always have been considered during the implementatio
 ## Classes & interfaces overview
 
 ### Model main classes
-#### IBoard, Board 
+*  **IBoard, Board** 
    The public face interface of the project for tracking the player state
 
-#### IBoardGrid, BoardGrid
+*  **IBoardGrid, BoardGrid**
    Managing the board grid. Any access to grid cells and managing them is done through this class
    The grid origin coordinate is x = 0, y = 0.
 
-#### ICell, Cell
+*  **ICell, Cell**
    Represents any cell on the grid. Any operation cell level like attacking a cell should be done through this class and will affect the state of the cell.
 
-#### OccupiedArea
+*  **OccupiedArea**
    The area of grid (cells) occupied by a specific ship is represented and handled by this class
 
-#### Ship
+*  **Ship**
    Represents a ship of a specific size located at starting position. with a specific direction (Horizontal/Vertical)
    *In vertical direction it is always from starting position toward the top of the grid and in horizontal direction the area will be from starting position toward right of the grid.*
 
-#### Direction
+*  **Direction**
    An Enum with two Horizontal and Vertical members.
 
-#### BoardDimension
+*  **BoardDimension**
    A struct to represent the dimension (with and height) of the board gird. 
 
-#### ShipSize
+*  **ShipSize**
    A struct to represent the length of the ship
 
 
 ### Factories
-#### IBoardFactory, BoardFactory
+*  **IBoardFactory, BoardFactory**
    To create a board
 
-#### IBoardGridFactory, BoardGridFactory
+*  **IBoardGridFactory, BoardGridFactory**
    To create and initialize the BoardGrid
 
-#### ICellFactory, CellFactory
+*  **ICellFactory, CellFactory**
    To create and initialize a cells of the board grid
 
 ### Exceptions
-#### OutOfRangePosition
+*  **OutOfRangePosition**
    Represents a Position is not inside the board grid
 
-#### ShipeNotFittedInBoard
+*  **ShipeNotFittedInBoard**
    To be thrown when to inform that a Ship cannot be added to the board
 
 ### Validators
-#### IPositionValidator, PositionValidator
+*  **IPositionValidator, PositionValidator**
    To validate whether a specific position is inside a board or not
 
 ### Services
-#### IPositionGenerator, PositionGenerator
+*  **IPositionGenerator, PositionGenerator**
    Generates set of positions of an area in the board grid which a ship is supposed to sit there
 
