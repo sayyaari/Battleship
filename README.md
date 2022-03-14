@@ -62,64 +62,64 @@ var attackResult = singlePlayerBoard.TakeAttack(5, 5);
 ```csharp
 singlePlayerBoard.HasLost
 ```
-## Implementation overview
+## Design principles
 Some basic principles which always have been considered during the implementation:
 
 * Ensuring that any piece of code added to the project can be testable independently and can be mocked when testing other components.
 * The classes should be easy to read and understand at first sight as much as possible and without burning them with too many responsibilities.
-## Classes overview
 
+## Classes & interfaces overview
 
 ### Model main classes
-##### IBoard, Board 
-The public face interface of the project for tracking the player state
+#### IBoard, Board 
+   The public face interface of the project for tracking the player state
 
-##### IBoardGrid, BoardGrid
-Managing the board grid. Any access to grid cells and managing them is done through this class
-The grid origin coordinate is x = 0, y = 0.
+#### IBoardGrid, BoardGrid
+   Managing the board grid. Any access to grid cells and managing them is done through this class
+   The grid origin coordinate is x = 0, y = 0.
 
-##### ICell, Cell
-Represents any cell on the grid. Any operation cell level like attacking a cell should be done through this class and will affect the state of the cell.
+#### ICell, Cell
+   Represents any cell on the grid. Any operation cell level like attacking a cell should be done through this class and will affect the state of the cell.
 
-##### OccupiedArea
-The area of grid (cells) occupied by a specific ship is represented and handled by this class
+#### OccupiedArea
+   The area of grid (cells) occupied by a specific ship is represented and handled by this class
 
-##### Ship
-Represents a ship of a specific size located at starting position. with a specific direction (Horizontal/Vertical)
-*In vertical direction it is always from starting position toward the top of the grid and in horizontal direction the area will be from starting position toward right of the grid.*
+#### Ship
+   Represents a ship of a specific size located at starting position. with a specific direction (Horizontal/Vertical)
+   *In vertical direction it is always from starting position toward the top of the grid and in horizontal direction the area will be from starting position toward right of the grid.*
 
-##### Direction
-An Enum with two Horizontal and Vertical members.
+#### Direction
+   An Enum with two Horizontal and Vertical members.
 
-##### BoardDimension
-A struct to represent the dimension (with and height) of the board gird. 
+#### BoardDimension
+   A struct to represent the dimension (with and height) of the board gird. 
 
-##### ShipSize
-A struct to represent the length of the ship
+#### ShipSize
+   A struct to represent the length of the ship
 
 
 ### Factories
-##### IBoardFactory, BoardFactory
-To create a board
+#### IBoardFactory, BoardFactory
+   To create a board
 
-##### IBoardGridFactory, BoardGridFactory
-To create and initialize the BoardGrid
+#### IBoardGridFactory, BoardGridFactory
+   To create and initialize the BoardGrid
 
-##### ICellFactory, CellFactory
-To create and initialize a cells of the board grid
+#### ICellFactory, CellFactory
+   To create and initialize a cells of the board grid
 
 ### Exceptions
-##### OutOfRangePosition
-Represents a Position is not inside the board grid
+#### OutOfRangePosition
+   Represents a Position is not inside the board grid
 
-##### ShipeNotFittedInBoard
-To be thrown when to inform that a Ship cannot be added to the board
+#### ShipeNotFittedInBoard
+   To be thrown when to inform that a Ship cannot be added to the board
 
 ### Validators
-##### IPositionValidator, PositionValidator
-To validate whether a specific position is inside a board or not
+#### IPositionValidator, PositionValidator
+   To validate whether a specific position is inside a board or not
 
 ### Services
-##### IPositionGenerator, PositionGenerator
-Generates set of positions of an area in the board grid which a ship is supposed to sit there
+#### IPositionGenerator, PositionGenerator
+   Generates set of positions of an area in the board grid which a ship is supposed to sit there
 
