@@ -51,5 +51,20 @@ namespace Battleship.Tests.Model
 
         }
 
+        [Theory]
+        [InlineData(1)]
+        [InlineData(3)]
+        [InlineData(4)]
+
+        public void Should_Create_Correct_Dimension_When_Using_Operator_Overloading(int size)
+        {
+
+            BoardDimension dimension = size;
+
+            dimension.Width.Should().Be(size);
+            dimension.Height.Should().Be(size);
+
+        }
+
     }
 }
